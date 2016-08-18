@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 
-{%load staticfiles %} <!-- Newline-->
-
 <html>
-
     <head>
-        <title>Rango</title>
+        <title>Rango - {% block title %}How to Tango with Django!{% endblock %}</title>
     </head>
 
     <body>
-        <h1>Rango says...</h1>
-        hello world! <strong>{{ boldmessage }}</strong><br />
-        <a href="/rango/about/">About</a><br />
-	<img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" /> <!-- New line -->
-    </body>
+        <div>
+            {% block body_block %}{% endblock %}
+        </div>
 
+        <hr />
+
+        <div>
+        	<ul>
+			    {% if user.is_authenticated %}
+			        <li><a href="{% url 'restricted' %}">Restricted Page</a></li>
+			        <li><a href="{% url 'logout' %}">Logout</a></li>
+			        <li><a href="{% url 'add_category' %}">Add a New Category</a></li>
+			    {% else %}
+			        <li><a href="{% url 'register' %}">Register Here</a></li>
+			        <li><a href="{% url 'login' %}">Login</a></li>
+			    {% endif %}
+
+			    <li><a href="{% url 'about' %}">About</a></li>
+    		</ul>
+		</div>
+    </body>
 </html>
