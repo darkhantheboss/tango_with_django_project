@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-
+from rango.bing_search import run_query
 def index(request):
 
     category_list = Category.objects.order_by('-likes')[:5]
@@ -139,3 +139,15 @@ def add_page(request, category_name_slug):
 def restricted(request):
     return HttpResponse("Since you're logged in, you can see this text!")
 
+def search(request):
+
+    result_list = []
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            # Run our Bing function to get the results list!
+            result_list = run_query(query)
+
+    return render(request, 'rango/search.html', {'result_list': result_list})
